@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+
+#MIT License
+#
+#Copyright (c) 2017 PG Granbom
+#
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software and associated documentation files (the "Software"), to deal
+#in the Software without restriction, including without limitation the rights
+#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#copies of the Software, and to permit persons to whom the Software is
+#furnished to do so, subject to the following conditions:
+#
+#The above copyright notice and this permission notice shall be included in all
+#copies or substantial portions of the Software.
+#
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#SOFTWARE.
+
+echo 'vget version 0.1.0 beta'
+
+svtplay_args="-S"
+audio_lang=swe
+sub_lang=swe
+dl_only=0
+remux_only=0
+
+if [ -f "$HOME/.vget" ]; then
+        . "$HOME/.vget"
+else
+  cat > "$HOME/.vget" <<-EOF
+	# Default values, uncomment to change
+	#svtplay_args="-S"
+	#audio_lang=swe
+	#sub_lang=swe
+	#dl_only=0
+	#remux_only=0
+EOF
+fi
+
+function usage {
+  cat <<-EOF
+  Usage: `basename $0` [options] [url]
+
+  Options:
+	  -h, --help                  show this help message and exit
+	  -d, --dl-only               do not run ffmpeg, only download with svtplay-dl
+	  -r, --remux-only            do not run svtplay-dl, just remux mp4 or ts files with srt to mkv
+	  -A, --all-episodes          svtplay-dl -A (all episodes)
+	  -l #, --all-last #          set number of episodes to download
+	  -a LANG, --audio-lang LANG  set audio language metadata in ffmpeg
+	  -s LANG, --sub-lang LANG    set subtitle language metadata in ffmpeg
+EOF
+exit 1
+}
+
+function run_ffmpeg () {
+  count=`ls -1 *.$1 2>/dev/null | wc -l`
+  if [ $count != 0 ]; then
+    for file in *.$1; do 
+      ffmpeg -i "$file" -i "${file%.$1}".srt -metadata:s:a:0 language="$audio_lang" -metadata:s:s:0 language="$sub_lang" -c copy "${file%.$1}".mkv
+      if [ $? -eq 0 ]; then
+        files+=("$file")
+      fi
+    done
+    if [ "${#files}" -gt 0 ]; then
+      echo "INFO: Remuxing done, removing $1 and srt"
+      for f in "${files[@]}"
+      do
+        echo "INFO: Removing ${f}"
+        rm "${f}"
+        rm "${f%.$1}".srt
+      done
+    else
+      >&2 echo "ERROR: No files to process"
+      exit 1
+    fi
+  fi
+}
+
+while [[ $# -gt 0 ]]; do
+  key="$1"
+  case "$key" in
+	# Display help
+	-h|--help)
+	  usage
+	;;
+	-d|--dl-only)
+    dl_only=1
+  ;;
+  -r|--remux-only)
+    remux_only=1
+  ;;
+  -A|--all-episodes)  
+    svtplay_args += " -A"
+  ;;
+  -l|--all-last)
+    shift
+    svtplay_args += " -A --all-last=$1"
+  ;;
+  -a|--audio-lang)
+    shift
+    audio_lang="$1"
+  ;;
+	-s|--subtitle-lang)
+	  shift
+	  sub_lang="$1"
+	;;
+  # This is an arg=value type option of -a.
+  -l=*|--all-last=*)
+    svtplay_args += " -A --all-last=${key#*=}"
+  ;;  
+  # This is an arg=value type option of -a.
+  -a=*|--audio-lang=*)
+    audio_lang="${key#*=}"
+  ;;
+  *)
+	  svtplay_url="$key"
+  ;;
+  esac
+  
+  shift
+done
+
+if [ "$remux_only" -eq "0" ]; then
+  [[ -z "$svtplay_url" ]] && { echo "ERROR: No URL specified." >&2; usage; }
+  echo "INFO: Using svtplay-dl options: $svtplay_args"
+  svtplay-dl $svtplay_args "$svtplay_url"
+fi
+
+if [ "$dl_only" -eq "0" ]; then
+  run_ffmpeg ts
+  run_ffmpeg mp4
+fi
