@@ -10,16 +10,45 @@ Just clone this repo to get the vget bash script file.
 vget are using 
 * [svtplay-dl](https://github.com/spaam/svtplay-dl)
 * [ffmpeg](https://github.com/FFmpeg/FFmpeg)
+
 Hence, they both need to be installed for vget to work.
+
+#### ffmpeg from source
+
+If you are using Ubuntu you can install ffmpeg's prerequisites like this
+```bash
+sudo apt install autoconf automake build-essential cmake git libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev mercurial pkg-config texinfo wget zlib1g-dev
+sudo apt install yasm libx264-dev libx265-dev libvpx-dev libfdk-aac-dev libmp3lame-dev libopus-dev librtmp-dev libxvidcore-dev ocl-icd-opencl-dev
+```
+
+Then clone from either github's mirror or original repository
+```bash
+git clone https://git.ffmpeg.org/ffmpeg.git
+./configure --enable-pthreads --enable-version3 --enable-avresample --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-librtmp --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-libxvid --enable-opencl --enable-openssl --enable-nonfree
+make
+sudo make install
+```
+
+#### svtplay-dl from source
+
+```bash
+git clone https://github.com/spaam/svtplay-dl.git
+make
+sudo make install
+```
 
 ### Installing
 
+```bash
+git clone https://github.com/granbom/vget.git
+```
 Copy vget to a directory in your PATH. For example in
 ```
-/usr/local/bin/ or ~/bin/
+/usr/local/bin/ or 
+~/bin/
 ```
 Don't forget to make it executable
-```
+```bash
 chmod +x vget
 ```
 
