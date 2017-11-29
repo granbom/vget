@@ -49,7 +49,7 @@ Copy vget to a directory in your PATH. For example in
 ```
 Don't forget to make it executable
 ```bash
-chmod +x vget
+chmod a+x vget
 ```
 
 ### Usage
