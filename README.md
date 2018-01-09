@@ -55,7 +55,7 @@ chmod a+x vget
 ### Usage
 
 Default vget will try to download subtitles and then remux the downloaded video with subtitles into a mkv file. It will set the language metadata for the audio and subtitles to Swedish. After this the mp4 or ts and srt file will be removed.
-You can change default behaviour in the created settings file ~/.vget
+You can change default behaviour in the created settings file ~/.vget.conf
 ```bash
 vget url-to-video
 # to see some options
