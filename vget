@@ -30,10 +30,10 @@ sub_lang=swe
 dl_only=0
 remux_only=0
 
-if [ -f "$HOME/.vget" ]; then
-        . "$HOME/.vget"
+if [ -f "$HOME/.vget.conf" ]; then
+        . "$HOME/.vget.conf"
 else
-  cat > "$HOME/.vget" <<-EOF
+  cat > "$HOME/.vget.conf" <<-EOF
 	# Default values, uncomment to change
 	#svtplay_args="-S"
 	#audio_lang=swe
