@@ -2,7 +2,7 @@
 
 #MIT License
 #
-#Copyright (c) 2017 PG Granbom
+#Copyright (c) 2018 PG Granbom
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,7 @@ exit 1
 function run_ffmpeg () {
   count=`ls -1 *.$1 2>/dev/null | wc -l`
   if [ $count != 0 ]; then
-    for file in *.$1; do 
+    for file in *.$1; do
       ffmpeg -i "$file" -i "${file%.$1}".srt -metadata:s:a:0 language="$audio_lang" -metadata:s:s:0 language="$sub_lang" -c copy "${file%.$1}".mkv
       if [ $? -eq 0 ]; then
         files+=("$file")
@@ -96,34 +96,34 @@ while [[ $# -gt 0 ]]; do
   -r|--remux-only)
     remux_only=1
   ;;
-  -A|--all-episodes)  
-    svtplay_args += " -A"
+  -A|--all-episodes)
+    svtplay_args+=" -A"
   ;;
   -l|--all-last)
     shift
-    svtplay_args += " -A --all-last=$1"
+    svtplay_args+=" -A --all-last=$1"
   ;;
   -a|--audio-lang)
     shift
     audio_lang="$1"
   ;;
-	-s|--subtitle-lang)
-	  shift
-	  sub_lang="$1"
+  -s|--subtitle-lang)
+    shift
+    sub_lang="$1"
 	;;
   # This is an arg=value type option of -a.
   -l=*|--all-last=*)
-    svtplay_args += " -A --all-last=${key#*=}"
-  ;;  
+    svtplay_args+=" -A --all-last=${key#*=}"
+  ;;
   # This is an arg=value type option of -a.
   -a=*|--audio-lang=*)
     audio_lang="${key#*=}"
   ;;
   *)
-	  svtplay_url="$key"
+    svtplay_url="$key"
   ;;
   esac
-  
+
   shift
 done
 
