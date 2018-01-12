@@ -15,7 +15,7 @@ vget are using
 
 Hence, they both need to be installed for vget to work.
 
-#### ffmpeg from source
+### ffmpeg from source
 
 If you are using Ubuntu you can install ffmpeg's prerequisites like this
 
@@ -24,7 +24,7 @@ sudo apt install autoconf automake build-essential cmake git libass-dev libfreet
 sudo apt install yasm libx264-dev libx265-dev libvpx-dev libfdk-aac-dev libmp3lame-dev libopus-dev librtmp-dev libxvidcore-dev ocl-icd-opencl-dev
 ```
 
-Then clone from either github's mirror or original repository
+Then clone from either github's mirror or original repository. Below is the original repo. Github one is: `https://github.com/FFmpeg/FFmpeg.git`
 
 ```bash
 git clone https://git.ffmpeg.org/ffmpeg.git
@@ -33,7 +33,7 @@ make
 sudo make install
 ```
 
-#### svtplay-dl from source
+### svtplay-dl from source
 
 ```bash
 git clone https://github.com/spaam/svtplay-dl.git
@@ -47,7 +47,7 @@ sudo make install
 git clone https://github.com/granbom/vget.git
 ```
 
-Copy vget to a directory in your PATH. For example in
+Copy vget to a directory in your $PATH. If you don't have a `bin` directory in you home folder before it will not be in your $PATH. Create your `~/bin/` and restart.
 
 ```bash
 /usr/local/bin/ or
