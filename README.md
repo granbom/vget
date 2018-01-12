@@ -20,11 +20,11 @@ Hence, they both need to be installed for vget to work.
 If you are using Ubuntu you can install ffmpeg's prerequisites like this
 
 ```bash
-sudo apt install autoconf automake build-essential cmake git libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev mercurial pkg-config texinfo wget zlib1g-dev
+sudo apt install autoconf automake build-essential cmake git libass-dev libfreetype6-dev libsdl2-dev libssl-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev mercurial pkg-config texinfo wget zlib1g-dev
 sudo apt install yasm libx264-dev libx265-dev libvpx-dev libfdk-aac-dev libmp3lame-dev libopus-dev librtmp-dev libxvidcore-dev ocl-icd-opencl-dev
 ```
 
-Then clone from either github's mirror or original repository. Below is the original repo. Github one is: `https://github.com/FFmpeg/FFmpeg.git`
+Then clone from either GitHub's mirror or FFmpeg's official repository.
 
 ```bash
 git clone https://git.ffmpeg.org/ffmpeg.git
@@ -32,6 +32,8 @@ git clone https://git.ffmpeg.org/ffmpeg.git
 make
 sudo make install
 ```
+
+(FFmpeg's repo in GitHub is: `https://github.com/FFmpeg/FFmpeg.git`)
 
 ### svtplay-dl from source
 
@@ -47,7 +49,7 @@ sudo make install
 git clone https://github.com/granbom/vget.git
 ```
 
-Copy vget to a directory in your $PATH. If you don't have a `bin` directory in you home folder before it will not be in your $PATH. Create your `~/bin/` and restart.
+Copy vget to a directory in your `$PATH`. If you don't have a `bin` directory in you home folder before, it will not be in your `$PATH`. Create your `~/bin/` and restart.
 
 ```bash
 /usr/local/bin/ or
