@@ -22,7 +22,7 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
-echo 'vget version 0.1.1 beta'
+echo 'vget version 1.0.0'
 
 svtplay_args="-S"
 audio_lang=swe
